@@ -17,20 +17,15 @@ RUN pip install --no-cache-dir pgadmin4
 RUN mkdir -p /var/lib/pgadmin /var/log/pgadmin && \
     chmod -R 777 /var/lib/pgadmin /var/log/pgadmin
 
-# Add config to disable interactive setup and import os
+# Hardcode credentials in config_local.py (no input interattivo)
 RUN echo "\
-import os\n\
 SERVER_MODE = True\n\
 DEFAULT_SERVER = '0.0.0.0'\n\
 DEFAULT_SERVER_PORT = 80\n\
-PGADMIN_SETUP_EMAIL = os.getenv('PGADMIN_DEFAULT_EMAIL')\n\
-PGADMIN_SETUP_PASSWORD = os.getenv('PGADMIN_DEFAULT_PASSWORD')\n\
+PGADMIN_SETUP_EMAIL = 'admin@example.com'\n\
+PGADMIN_SETUP_PASSWORD = 'admin'\n\
 MASTER_PASSWORD_REQUIRED = False\n\
 " > /usr/local/lib/python3.10/site-packages/pgadmin4/config_local.py
-
-# Environment variables
-ENV PGADMIN_DEFAULT_EMAIL=admin@example.com
-ENV PGADMIN_DEFAULT_PASSWORD=admin
 
 EXPOSE 80
 
